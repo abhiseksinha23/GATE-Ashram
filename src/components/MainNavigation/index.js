@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +17,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { navigationRoutes } from '../../utils/navigationRoutes';
 
 const drawerWidth = 240;
 
@@ -24,22 +26,26 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     drawer: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: drawerWidth,
             flexShrink: 0,
         },
     },
     appBar: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
     },
     menuButton: {
         marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             display: 'none',
         },
+    },
+    activeLink: {
+        color: theme.palette.primary.main,
+        textDecoration: 'none',
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -55,11 +61,13 @@ const useStyles = makeStyles((theme) => ({
 const menuList = [
     {
         label: 'Home',
-        icon: <HomeIcon />
+        icon: <HomeIcon />,
+        to: `${navigationRoutes.HOME}`,
     },
     {
         label: 'Question Bank',
-        icon: <QuestionAnswerIcon />
+        icon: <QuestionAnswerIcon />,
+        to: `${navigationRoutes.QUESTION_BANK}`,
     }
 ];
 
@@ -68,10 +76,13 @@ function MainNavigation(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const location = useLocation();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
+
 
     const drawer = (
         <div>
@@ -79,8 +90,20 @@ function MainNavigation(props) {
             <Divider />
             <List>
                 {menuList.map((menu) => (
-                    <ListItem button key={menu.label}>
-                        <ListItemIcon>{menu.icon}</ListItemIcon>
+                    <ListItem
+                        button
+                        component={NavLink}
+                        exact
+                        to={menu.to}
+                        activeClassName={classes.activeLink}
+                        key={menu.label}
+                    >
+                        <ListItemIcon
+                            color="red"
+                            className={location.pathname === menu.to && (classes.activeLink)}
+                        >
+                            {menu.icon}
+                        </ListItemIcon>
                         <ListItemText primary={menu.label} />
                     </ListItem>
                 ))}
@@ -111,7 +134,7 @@ function MainNavigation(props) {
             </AppBar>
             <nav className={classes.drawer} aria-label="section links">
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
+                <Hidden mdUp implementation="css">
                     <Drawer
                         container={container}
                         variant="temporary"
@@ -128,7 +151,7 @@ function MainNavigation(props) {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <Hidden xsDown implementation="css">
+                <Hidden smDown implementation="css">
                     <Drawer
                         classes={{
                             paper: classes.drawerPaper,
