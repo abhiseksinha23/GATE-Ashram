@@ -13,7 +13,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -64,11 +63,6 @@ const menuList = [
         icon: <HomeIcon />,
         to: `${navigationRoutes.HOME}`,
     },
-    {
-        label: 'Question Bank',
-        icon: <QuestionAnswerIcon />,
-        to: `${navigationRoutes.QUESTION_BANK}`,
-    }
 ];
 
 function MainNavigation(props) {
